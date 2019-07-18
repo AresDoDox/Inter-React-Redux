@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import Product from './product/product-component';
-import AlertComponent from './../pure-components/alert-component'
+import AlertComponent from './../pure-components/alert-component';
 
 import { connect } from 'react-redux';
 

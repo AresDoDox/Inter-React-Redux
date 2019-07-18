@@ -159,3 +159,16 @@ export const deleteProduct = (id) => {
         }).catch();
     }
 }
+
+export const editProduct = (id) => {
+    return (dispatch) => {
+        axios.post('http://localhost:1494/api/products/edit', {id})
+        // .then(res=> res.data)
+        // .then(data => {
+        //     dispatch(fetchApiProduct(data));
+        //     dispatch({
+        //         type: types.PRODUCT_DELETE,
+        //     });
+        // }).catch();
+    }
+}

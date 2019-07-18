@@ -9,6 +9,7 @@ import RegisterComponent from './components/register/register-component';
 import ListProduct from './components/products/list-product-component';
 import ProductDetail from './components/products/product-detail/product-detail';
 import ProductCreate from './components/products/product-create/product-create';
+import ProductEdit from './components/products/product-edit/product-edit';
 import * as actions from './actions/index';
 
 import { connect } from 'react-redux';
@@ -81,6 +82,7 @@ class App extends Component {
           <Route path="/products" exact component={ListProduct} />
           <Route path="/product-detail" exact component={ProductDetail} />
           <Route path="/product-create" exact component={ProductCreate} />
+          <Route path="/product-edit" exact component={ProductEdit} />
         </div>
       </div>
     );

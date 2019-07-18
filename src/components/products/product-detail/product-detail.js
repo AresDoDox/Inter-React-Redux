@@ -18,6 +18,10 @@ class ProductDetail extends Component {
         this.props.history.push("/products");
     }
 
+    onEditProduct = () => {
+        this.props.history.push("/product-edit");
+    }
+
     render() {
         let {product_id, products} = this.props;
         let product = products.filter( product => product._id === product_id )[0];
@@ -35,14 +39,14 @@ class ProductDetail extends Component {
                             <Media heading>
                                 {product.name}
                             </Media>
-                            <Media>
+                            <Media className="mb-4">
                                 {product.description}
                             </Media>
-                            <Button color="danger" onClick={()=>{this.onDeleteProduct(product_id)}}>Xóa</Button>
+                            <Button className="mr-2" color="danger" onClick={()=>{this.onDeleteProduct(product_id)}}>Xóa</Button>
+                            <Button color="success" onClick={()=>{this.onEditProduct()}}>Sửa</Button>
                         </Media>
                     </Media>
                 }
-                
             </div>
         )
     }

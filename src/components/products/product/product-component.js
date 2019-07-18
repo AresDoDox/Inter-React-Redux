@@ -7,6 +7,7 @@ import {
 
 import { connect } from 'react-redux';
 import * as actions from './../../../actions';
+import './product.css';
 
 class Product extends Component {
 
@@ -22,7 +23,7 @@ class Product extends Component {
                 <CardImg top width="100%" src={product.image} alt={product.name} />
                 <CardBody>
                     <CardTitle>{product.name}</CardTitle>
-                    <CardText>{product.description}</CardText>
+                    <CardText className="description-product">{product.description}</CardText>
                     <Button color="primary" onClick={() => this.onViewDetail(product._id)}>View more</Button>
                 </CardBody>
             </Card>
