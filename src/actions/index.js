@@ -76,7 +76,14 @@ export const loginUser = (email, password) => {
         // });
     };
 };
-
+// action LOGOUT
+export const logoutUser = () => {
+    return (dispatch) => {
+        dispatch({
+            type: types.LOGOUT
+        });
+    }
+}
 // action REGISTER
 export const registerUser = (email, password, re_password) => {
     return (dispatch) => {
@@ -104,7 +111,7 @@ export const registerUser = (email, password, re_password) => {
                 }
             }).catch();
         // Create Account   
-        if (password && email){
+        if (password && email) {
             dispatch({
                 type: types.REGISTER_SUCCESS,
                 user: {
@@ -112,18 +119,18 @@ export const registerUser = (email, password, re_password) => {
                     email
                 }
             });
-        } 
+        }
     }
 }
 
 //action PRODUCT
-export const product = (name,image,description) => {
+export const product = (name, image, description) => {
     return (dispatch) => {
-        if(name === "" || image === "" || description === "" ){
+        if (name === "" || image === "" || description === "") {
             dispatch({
                 type: types.PRODUCT_FAILED,
             });
-        }else{
+        } else {
             axios.post('http://localhost:1494/api/products', {
                 name,
                 image,
@@ -132,43 +139,58 @@ export const product = (name,image,description) => {
                 res => {
                     let id = res.data._id;
                     axios('http://localhost:1494/api/products')
-                    .then(res => res.data)
-                    .then(data => {
-                        dispatch(fetchApiProduct(data));
-                        dispatch({
-                            type: types.PRODUCT_CREATE,
-                            id: id,
+                        .then(res => res.data)
+                        .then(data => {
+                            dispatch(fetchApiProduct(data));
+                            dispatch({
+                                type: types.PRODUCT_CREATE,
+                                id: id,
+                            });
                         });
-                    });
                 }
             ).catch();
         }
-        
     }
 }
 
 export const deleteProduct = (id) => {
     return (dispatch) => {
-        axios.post('http://localhost:1494/api/products/delete', {id})
-        .then(res=> res.data)
-        .then(data => {
-            dispatch(fetchApiProduct(data));
-            dispatch({
-                type: types.PRODUCT_DELETE,
-            });
-        }).catch();
+        axios.post('http://localhost:1494/api/products/delete', { id })
+            .then(res => res.data)
+            .then(data => {
+                dispatch(fetchApiProduct(data));
+                dispatch({
+                    type: types.PRODUCT_DELETE,
+                });
+            }).catch();
     }
 }
 
-export const editProduct = (id) => {
+export const editProduct = (id, name, image, description) => {
     return (dispatch) => {
-        axios.post('http://localhost:1494/api/products/edit', {id})
-        // .then(res=> res.data)
-        // .then(data => {
-        //     dispatch(fetchApiProduct(data));
-        //     dispatch({
-        //         type: types.PRODUCT_DELETE,
-        //     });
-        // }).catch();
+        if (name === "" || image === "" || description === "") {
+            dispatch({
+                type: types.PRODUCT_FAILED,
+            });
+        } else {
+            axios.post('http://localhost:1494/api/products/edit', {
+                id,
+                name,
+                image,
+                description
+            }).then(res => res.dataId)
+            .then(dataId => {
+                let id = dataId;
+                axios('http://localhost:1494/api/products')
+                    .then(res => res.data)
+                    .then(data => {
+                        dispatch(fetchApiProduct(data));
+                        dispatch({
+                            type: types.PRODUCT_UPDATE,
+                            id: id,
+                        });
+                    });
+            }).catch();
+        }
     }
 }

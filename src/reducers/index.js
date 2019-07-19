@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 
 //import các reducers
-import fetchApiUser from './fetchApiUser';
+// import fetchApiUser from './fetchApiUser';
 import fetchApiProduct from './fetchApiProduct';
 import viewDetailProduct from './viewDetailProduct';
 import login from './login';
@@ -12,7 +12,7 @@ import products from './products';
 //combine các reducers
 const myReducers = combineReducers({
     // reducers
-    fetchApiUser,
+    // fetchApiUser,
     fetchApiProduct,
     viewDetailProduct,
     login,

@@ -18,14 +18,18 @@ class LoginComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.user.token) {
-            this.props.history.push("/");
-        } 
-        if (nextProps.user !== 'DEFAULT'){
+        if (nextProps.user.token === ""){
+            this.setState({
+                isAlertShown: false
+            });
+        }else{
             this.setState({
                 isAlertShown: true
             });
-        }  
+        }
+        if (nextProps.user.token && nextProps.user.token !== "") {
+            this.props.history.push("/");
+        } 
     }
 
 

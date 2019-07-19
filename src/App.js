@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import './App.css';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap';
+import { Route, Link, withRouter, Switch } from "react-router-dom";
 
-import { Route, Link, withRouter } from "react-router-dom";
-import { Button } from 'reactstrap';
-
+import HomeComponent from './components/home/home-component';
 import LoginComponent from './components/login/login-component';
 import RegisterComponent from './components/register/register-component';
 import ListProduct from './components/products/list-product-component';
 import ProductDetail from './components/products/product-detail/product-detail';
 import ProductCreate from './components/products/product-create/product-create';
 import ProductEdit from './components/products/product-edit/product-edit';
+import NoMatchComponent from './components/pure-components/no-match/no-match-component';
+
+
 import * as actions from './actions/index';
 
 import { connect } from 'react-redux';
@@ -19,9 +33,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpen: false,
       isLogin: false,
-      user: '',
+      user: {},
     }
+  }
+
+  toggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   componentDidMount() {
@@ -29,12 +50,22 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.user.token) {
+    if (nextProps.user.token && nextProps.user.token !== "") {
       this.setState({
         user: nextProps.user,
         isLogin: true
       });
+    } else {
+      this.setState({
+        user: {},
+        isLogin: false
+      });
     }
+  }
+
+  onLogoutUser = () => {
+    this.props.onLogoutUser();
+    this.props.history.push("/login");
   }
 
   render() {
@@ -44,45 +75,64 @@ class App extends Component {
       //   <LoginComponent/>
       // </div>
       <div>
-        <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-          <h5 className="my-0 mr-md-auto font-weight-normal">Thái Huy</h5>
-          {isLogin === false &&
-            <nav className="my-2 my-md-0 mr-md-3">
-              <Link to="/" className="mr-3">Trang chủ</Link>
-              <Link to="/register" className="mr-3">Đăng ký</Link>
-              <Link to="/login" className="">Đăng nhập</Link>
-            </nav>
-          }
-          {isLogin &&
-            <nav className="my-2 my-md-0 mr-md-3">
-              <Link to="/" className="mr-3">Trang chủ</Link>
-              <Link to="/products" className="mr-3">Bài viết</Link>
-              <span className="mr-3">Hi, {user.email}</span>
-              <Button outline color="primary" onClick={() => {
-                this.setState({
-                  isLogin: false,
-                  user: {
-                    email: ''
-                  }
-                });
-                this.props.history.push("/login");
-              }}>Đăng xuất</Button>
-            </nav>
-          }
-        </div>
-        <div className="container">
-          {isLogin === false &&
-            <Route path="/" exact component={() => <h1>Chào mừng bạn đến Website của Thái Huy!!!</h1>} />
-          }
-          {isLogin &&
-            <Route path="/" exact component={ListProduct} />
-          }
-          <Route path="/login" exact render={props => (<LoginComponent />)} />
-          <Route path="/register" exact render={props => (<RegisterComponent />)} />
-          <Route path="/products" exact component={ListProduct} />
-          <Route path="/product-detail" exact component={ProductDetail} />
-          <Route path="/product-create" exact component={ProductCreate} />
-          <Route path="/product-edit" exact component={ProductEdit} />
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">ThaiHuy</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            {!isLogin &&
+              <Nav className="ml-auto" navbar>
+                <NavItem >
+                    <Link to="/" className="nav-link">Trang chủ</Link>
+                </NavItem>
+                <NavItem >
+                    <Link to="/products" className="nav-link">Bài viết</Link>
+                </NavItem>
+                <NavItem >
+                    <Link to="/register" className="nav-link">Đăng ký</Link>
+                </NavItem>
+                <NavItem >
+                    <Link to="/login" className="nav-link">Đăng nhập</Link>
+                </NavItem>
+              </Nav>
+            }
+            {isLogin &&
+              <Nav className="ml-auto" navbar>
+                <NavItem >
+                    <Link to="/" className="nav-link">Trang chủ</Link>
+                </NavItem>
+                <NavItem >
+                    <Link to="/products" className="nav-link">Bài viết</Link>
+                </NavItem>
+                <UncontrolledDropdown nav inNavbar >
+                  <DropdownToggle nav caret>
+                    {user.email}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={() => this.onLogoutUser()}>
+                      Đăng xuất
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Nav>
+            }
+          </Collapse>
+        </Navbar>
+        <div className="container pt-3">
+          <Switch>
+            {!isLogin &&
+              <Route path="/" exact component={() => <h1>Chào mừng bạn đến Website của Thái Huy!!!</h1>} />
+            }
+            {isLogin &&
+              <Route path="/" exact component={HomeComponent} />
+            }
+            <Route path="/login" exact component={LoginComponent} />
+            <Route path="/register" exact component={RegisterComponent} />
+            <Route path="/products" exact component={ListProduct} />
+            <Route path="/product-detail" exact component={ProductDetail} />
+            <Route path="/product-create" exact component={ProductCreate} />
+            <Route path="/product-edit" exact component={ProductEdit} />
+            <Route component={NoMatchComponent} />
+          </Switch>
         </div>
       </div>
     );
@@ -100,7 +150,10 @@ let mapDispatchToProps = (dispatch, action) => {
   return {
     onFetchApiProduct: () => {
       dispatch(actions.fetchApiProductRequest());
-    }
+    },
+    onLogoutUser: () => {
+      dispatch(actions.logoutUser());
+    },
   };
 }
 

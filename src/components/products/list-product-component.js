@@ -16,18 +16,28 @@ class ListProduct extends Component {
             isAlertShow: false,
         }
     }
+
+    componentWillMount() {
+        if (this.props.user.token) {
+            this.setState({
+                isLogin: true
+            });
+        }
+    }
+
     componentWillReceiveProps(nextProps, nextContext){
         if(nextProps.statusProduct.status === "PRODUCT_DELETE"){
             this.setState({
-                isAlertShow: true
+                isLogin: false,
+                isAlertShow: true,
             });
         }
     }
 
     render(){
         let { products } = this.props;
-        let { isAlertShow } = this.state;
-        let elements = products.reverse().map( (product,index) => {
+        let { isAlertShow, isLogin } = this.state;
+        let elements = products.map( (product,index) => {
             return (
                 <Col xs="12" sm="4" md="3" key={index}>
                     <Product product={product}/>
@@ -38,14 +48,17 @@ class ListProduct extends Component {
         return (
             <div>  
                 <Row className="mb-3">
-                    <Col xs="8" sm="9" md="9" >
-                        <h3>Tất cả bài viết</h3>
+                    <Col xs="7" sm="9" md="9" >
+                        <h3>TẤT CẢ BÀI VIẾT</h3>
                     </Col>
-                    <Col xs="4" sm="3" md="3" >
-                        <Button color="primary" style={{float: "right"}}>
-                            <Link to="/product-create" style={{color: "#fff"}}>Thêm bài viết</Link>
-                        </Button>
-                    </Col>
+                    {isLogin &&
+                        <Col xs="5" sm="3" md="3" >
+                            <Button color="primary" style={{float: "right"}}>
+                                <Link to="/product-create" style={{color: "#fff"}}>Thêm bài viết</Link>
+                            </Button>
+                        </Col>
+                    }
+                    <Col xs="12" sm="12" md="12"><hr className="m-0"></hr></Col>
                 </Row>
                 <Row>
                     {isAlertShow && 
@@ -64,7 +77,8 @@ class ListProduct extends Component {
 let mapStateToProps = (store) => {
     return {
         products: store.fetchApiProduct,
-        statusProduct: store.products
+        statusProduct: store.products,
+        user: store.login,
     };
   };
   

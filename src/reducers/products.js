@@ -10,6 +10,11 @@ let myReducer = (state = initialState, action) => {
                 status: "PRODUCT_CREATE",
                 id: action.id
             };
+        case types.PRODUCT_UPDATE:
+            return {
+                status: "PRODUCT_UPDATE",
+                id: action.id
+            };
         case types.PRODUCT_DELETE:
             return {
                 status: "PRODUCT_DELETE",

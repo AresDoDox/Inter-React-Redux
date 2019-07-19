@@ -1,3 +1,6 @@
-.App {
 
+@media (max-width: 767.98px) {
+    .hide-user{
+        display: none;
+    }
 }

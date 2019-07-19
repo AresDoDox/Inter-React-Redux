@@ -6,12 +6,20 @@ import { connect } from 'react-redux';
 import * as actions from './../../../actions';
 
 class ProductDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLogin: false
+        }
+    }
 
-    // componentWillReceiveProps(nextProps, nextContext){
-    //     if(nextProps.statusProduct.status === "PRODUCT_DELETE"){
-    //         this.props.history.push("/products");
-    //     }
-    // }
+    componentWillMount() {
+        if (this.props.user.token) {
+            this.setState({
+                isLogin: true
+            });
+        }
+    }
 
     onDeleteProduct = (product_id) => {
         this.props.onDeleteProduct(product_id);
@@ -23,14 +31,15 @@ class ProductDetail extends Component {
     }
 
     render() {
-        let {product_id, products} = this.props;
-        let product = products.filter( product => product._id === product_id )[0];
+        let { product_id, products } = this.props;
+        let {isLogin} = this.state;
+        let product = products.filter(product => product._id === product_id)[0];
         return (
             <div>
-                { !product &&  
-                    <Alert color="danger">The post does not exist!!!</Alert>
+                {!product &&
+                    <Alert color="danger">Bài viết không tồn tại!!!</Alert>
                 }
-                { product &&  
+                {product &&
                     <Media>
                         <Media left href="#" className="mr-3">
                             <Media object src={product.image} alt={product.name} />
@@ -42,8 +51,12 @@ class ProductDetail extends Component {
                             <Media className="mb-4">
                                 {product.description}
                             </Media>
-                            <Button className="mr-2" color="danger" onClick={()=>{this.onDeleteProduct(product_id)}}>Xóa</Button>
-                            <Button color="success" onClick={()=>{this.onEditProduct()}}>Sửa</Button>
+                            {isLogin &&
+                                <div>
+                                    <Button className="mr-2" color="danger" onClick={() => { this.onDeleteProduct(product_id) }}>Xóa</Button>
+                                    <Button color="success" onClick={() => { this.onEditProduct() }}>Sửa</Button>
+                                </div> 
+                            }
                         </Media>
                     </Media>
                 }
@@ -57,17 +70,18 @@ let mapStateToProps = (store) => {
     return {
         product_id: store.viewDetailProduct,
         products: store.fetchApiProduct,
-        statusProduct: store.products
+        statusProduct: store.products,
+        user: store.login
     };
-  };
-  
-  let mapDispatchToProps = (dispatch, action) => {
+};
+
+let mapDispatchToProps = (dispatch, action) => {
     return {
         onDeleteProduct: (product_id) => {
             dispatch(actions.deleteProduct(product_id))
         }
     };
-  }
-  
-  
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ProductDetail));
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductDetail));

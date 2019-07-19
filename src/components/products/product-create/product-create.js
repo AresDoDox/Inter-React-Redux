@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import { Form, FormGroup, Label, Input, Button, Media } from 'reactstrap';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import * as actions from './../../../actions';
 
@@ -16,6 +16,12 @@ class ProductCreate extends Component {
             isAlertShown: false,
             errors: '',
             colorAlert: "danger"
+        }
+    }
+
+    componentWillMount() {
+        if (!this.props.user.token) {
+            this.props.history.push("/login");
         }
     }
 
@@ -51,11 +57,11 @@ class ProductCreate extends Component {
         let { colorAlert, isAlertShown, errors, name, image, description } = this.state;
         return (
             <Form>
-                <h3>ĐĂNG KÝ TÀI KHOẢN</h3>
+                <h3>ĐĂNG BÀI VIẾT</h3>
                 {isAlertShown &&
                     <AlertComponent color={colorAlert} content={errors} />  
                 }
-                {isAlertShown &&
+                {(isAlertShown && colorAlert === "success")  &&
                     <Button color="primary" onClick={() => this.onViewDetail(this.props.Product.id)} className="mb-2">Xem tin ngay!</Button>
                 }
                 <FormGroup>
@@ -91,6 +97,7 @@ class ProductCreate extends Component {
                             }
                         }}
                     />
+                    <Media object src={image} alt={name} height="200px"/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleText">Nội dung</Label>
@@ -98,6 +105,7 @@ class ProductCreate extends Component {
                         type="textarea"
                         name="description"
                         id="exampleText"
+                        rows="8"
                         value={this.state.description}
                         onChange={(event) => {
                             this.setState({
@@ -106,7 +114,7 @@ class ProductCreate extends Component {
                         }}
                     />
                 </FormGroup>
-                <Button color="primary" className="mb-2" onClick={() => this.onCreatePost(name, image, description)}>Đăng tin</Button>
+                <Button color="primary" className="mb-2" onClick={() => this.onCreatePost(name, image, description)}>Đăng bài viết</Button>
             </Form>
         )
     }
@@ -116,6 +124,7 @@ class ProductCreate extends Component {
 let mapStateToProps = (store) => {
     return {
         Product: store.products,
+        user: store.login,
     };
 };
 
@@ -131,4 +140,4 @@ let mapDispatchToProps = (dispatch, action) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductCreate));

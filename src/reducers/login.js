@@ -16,12 +16,18 @@ let myReducer = (state = initialState, action) => {
                 token: action.data.token,
             }
             return {...state};
+        case types.LOGOUT:
+            return {
+                userId: "",
+                email:'',
+                token: '',
+            }
         case types.LOGIN_PROGRESS:
             return "LOGIN_PROGRESS";
         case types.LOGIN_FAILED:
             return "LOGIN_FAILED";
         default:
-            return "DEFAULT";
+            return state;
     };
 };
 export default myReducer;
