@@ -10,7 +10,8 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Input
 } from 'reactstrap';
 import { Route, Link, withRouter, Switch } from "react-router-dom";
 
@@ -21,6 +22,7 @@ import ListProduct from './components/products/list-product-component';
 import ProductDetail from './components/products/product-detail/product-detail';
 import ProductCreate from './components/products/product-create/product-create';
 import ProductEdit from './components/products/product-edit/product-edit';
+import ProductSearch from './components/products/product-search/product-search';
 import NoMatchComponent from './components/pure-components/no-match/no-match-component';
 
 
@@ -36,6 +38,7 @@ class App extends Component {
       isOpen: false,
       isLogin: false,
       user: {},
+      keyword: ''
     }
   }
 
@@ -68,12 +71,14 @@ class App extends Component {
     this.props.history.push("/login");
   }
 
+  onSearch = (keyword) => {
+    this.props.onSearch(keyword);
+    this.props.history.push("/product-search");
+  }
+
   render() {
-    let { isLogin, user } = this.state;
+    let { isLogin, user, keyword } = this.state;
     return (
-      // <div classNameName="App">
-      //   <LoginComponent/>
-      // </div>
       <div>
         <Navbar color="light" light expand="md">
           <NavbarBrand href="/">ThaiHuy</NavbarBrand>
@@ -81,6 +86,26 @@ class App extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             {!isLogin &&
               <Nav className="ml-auto" navbar>
+                <NavItem className="mr-3" >
+                  <Input 
+                    type="text" 
+                    name="keyword" 
+                    id="keyword" 
+                    placeholder="Nhập từ muốn tìm..."
+                    value={keyword}
+                    onChange={(event)=>{
+                      this.setState({
+                        keyword: event.target.value
+                      })
+                    }}
+                    onKeyDown={(event)=>{
+                      if(event.keyCode === 13){
+                        this.onSearch(keyword);
+                      }
+                    }
+                    }
+                  />
+                </NavItem>
                 <NavItem >
                     <Link to="/" className="nav-link">Trang chủ</Link>
                 </NavItem>
@@ -131,6 +156,7 @@ class App extends Component {
             <Route path="/product-detail" exact component={ProductDetail} />
             <Route path="/product-create" exact component={ProductCreate} />
             <Route path="/product-edit" exact component={ProductEdit} />
+            <Route path="/product-search" exact component={ProductSearch} />
             <Route component={NoMatchComponent} />
           </Switch>
         </div>
@@ -154,6 +180,9 @@ let mapDispatchToProps = (dispatch, action) => {
     onLogoutUser: () => {
       dispatch(actions.logoutUser());
     },
+    onSearch: (keyword) => {
+      dispatch(actions.searchProduct(keyword));
+    }
   };
 }
 

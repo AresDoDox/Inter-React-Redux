@@ -194,3 +194,11 @@ export const editProduct = (id, name, image, description) => {
         }
     }
 }
+
+// search PRODUCT
+export const searchProduct = (keyword) => {
+    return {
+        type: types.PRODUCT_SEARCH,
+        keyword
+    }
+}

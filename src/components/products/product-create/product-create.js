@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, Button, Media } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Media, CustomInput } from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import * as actions from './../../../actions';
@@ -80,11 +80,11 @@ class ProductCreate extends Component {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="exampleFile">File Image</Label>
-                    <Input
-                        type="file"
-                        name="image"
-                        id="exampleFile"
+                    <Label for="exampleCustomFileBrowser">File Image</Label>
+                    <CustomInput 
+                        type="file" 
+                        id="exampleCustomFileBrowser" 
+                        name="customFile" 
                         // value={this.state.image}
                         onChange={(event) => {
                             let files = event.target.files;
@@ -97,7 +97,7 @@ class ProductCreate extends Component {
                             }
                         }}
                     />
-                    <Media object src={image} alt={name} height="200px"/>
+                    <Media object src={image} alt={name} height="200px" className="mt-2"/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleText">Nội dung</Label>
