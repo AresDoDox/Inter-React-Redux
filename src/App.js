@@ -4,7 +4,6 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   UncontrolledDropdown,
@@ -29,7 +28,6 @@ import NoMatchComponent from './components/pure-components/no-match/no-match-com
 import * as actions from './actions/index';
 
 import { connect } from 'react-redux';
-// import * as actions from './actions';
 
 class App extends Component {
   constructor(props) {
@@ -81,7 +79,7 @@ class App extends Component {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">ThaiHuy</NavbarBrand>
+          <Link to="/" className="navbar-brand">Thái Huy</Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             {!isLogin &&
@@ -122,6 +120,26 @@ class App extends Component {
             }
             {isLogin &&
               <Nav className="ml-auto" navbar>
+                <NavItem className="mr-3" >
+                  <Input 
+                    type="text" 
+                    name="keyword" 
+                    id="keyword" 
+                    placeholder="Nhập từ muốn tìm..."
+                    value={keyword}
+                    onChange={(event)=>{
+                      this.setState({
+                        keyword: event.target.value
+                      })
+                    }}
+                    onKeyDown={(event)=>{
+                      if(event.keyCode === 13){
+                        this.onSearch(keyword);
+                      }
+                    }
+                    }
+                  />
+                </NavItem>
                 <NavItem >
                     <Link to="/" className="nav-link">Trang chủ</Link>
                 </NavItem>
