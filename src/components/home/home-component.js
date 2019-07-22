@@ -4,6 +4,7 @@ import {
 } from 'reactstrap';
 
 import Product from './../products/product/product-component';
+import AlertComponent from './../pure-components/alert-component';
 
 import { connect } from 'react-redux';
 
@@ -29,6 +30,11 @@ class HomeComponent extends Component {
                     <Col xs="12" sm="12" md="12"><hr className="m-0"></hr></Col>
                 </Row>
                 <Row>
+                    {elements.length === 0 &&
+                        <Col xs="12" sm="12" md="12" >
+                            <AlertComponent color={"danger"} content={"Không tồn tại bất kỳ bài viết nào...!!!~"} />
+                        </Col>
+                    }
                     {elements}
                 </Row>
             </div>

@@ -28,7 +28,6 @@ class ListProduct extends Component {
     componentWillReceiveProps(nextProps, nextContext){
         if(nextProps.statusProduct.status === "PRODUCT_DELETE"){
             this.setState({
-                isLogin: false,
                 isAlertShow: true,
             });
         }
@@ -64,6 +63,11 @@ class ListProduct extends Component {
                     {isAlertShow && 
                         <Col xs="12" sm="12" md="12">
                             <AlertComponent color={"success"} content={"Xóa bài viết thành công !!!~"} />
+                        </Col>
+                    }
+                    {elements.length === 0 &&
+                        <Col xs="12" sm="12" md="12" >
+                            <AlertComponent color={"danger"} content={"Không tồn tại bất kỳ bài viết nào...!!!~"} />
                         </Col>
                     }
                     {elements}

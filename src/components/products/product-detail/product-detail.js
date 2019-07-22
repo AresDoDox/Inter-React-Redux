@@ -42,7 +42,7 @@ class ProductDetail extends Component {
                 {product &&
                     <Media>
                         <Media left href="#" className="mr-3">
-                            <Media object src={product.image} alt={product.name} />
+                            <Media object src={`http://${product.image}`} alt={product.name} />
                         </Media>
                         <Media body>
                             <Media heading>

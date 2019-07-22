@@ -20,7 +20,7 @@ class Product extends Component {
         let { product } = this.props;
         return (
             <Card className="mb-3">
-                <CardImg top width="100%" src={product.image} alt={product.name} />
+                <CardImg top width="100%" src={`http://${product.image}`} alt={product.name} />
                 <CardBody>
                     <CardTitle>{product.name}</CardTitle>
                     <CardText className="description-product">{product.description}</CardText>
