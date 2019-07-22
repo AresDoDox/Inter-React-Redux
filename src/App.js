@@ -92,8 +92,8 @@ class App extends Component {
   render() {
     let { isLogin, email, keyword } = this.state;
     return (
-      <div>
-        <Navbar color="light" light expand="md">
+      <div className="App">
+        <Navbar light expand="md" className="nav-app">
           <Link to="/" className="navbar-brand">Thái Huy</Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -177,12 +177,10 @@ class App extends Component {
         </Navbar>
         <div className="px-3 py-3">
           <Switch>
-            {!isLogin &&
+            {/* {!isLogin &&
               <Route path="/" exact component={() => <h1>Chào mừng bạn đến Website của Thái Huy!!!</h1>} />
-            }
-            {isLogin &&
-              <Route path="/" exact component={HomeComponent} />
-            }
+            } */}
+            <Route path="/" exact component={HomeComponent} />
             <Route path="/login" exact component={LoginComponent} />
             <Route path="/register" exact component={RegisterComponent} />
             <Route path="/products" exact component={ListProduct} />

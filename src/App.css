@@ -1,6 +1,30 @@
-
+.App{
+    position: relative;
+}
+.nav-app{
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-bottom: 1px solid #fff;
+}
+.navbar-brand,
+.nav-item>a{
+    color: #fff !important;
+}
+.nav-item:hover a{
+    color: #fff !important;
+}
 @media (max-width: 767.98px) {
     .hide-user{
         display: none;
+    }
+    .navbar-collapse{
+        padding-top: 15px;
+    }
+    .navbar-light .navbar-toggler{
+        border-color: #fff !important;
+        color: #fff !important;
+    }
+    .navbar-light .navbar-toggler-icon {
+        background-image: url(./image/nav.png) !important;
     }
 }

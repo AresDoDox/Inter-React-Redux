@@ -27,7 +27,7 @@ class Product extends Component {
                     <div className="description-product">
                         { ReactHtmlParser(product.description) }
                     </div>
-                    <Button color="primary" onClick={() => this.onViewDetail(product._id)}>View more</Button>
+                    <Button color="primary" onClick={() => this.onViewDetail(product._id)}>Xem thêm</Button>
                 </CardBody>
             </Card>
         )
