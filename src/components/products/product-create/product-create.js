@@ -97,7 +97,7 @@ class ProductCreate extends Component {
                             }
                         }}
                     />
-                    <Media object src={image} alt={name} height="200px" className="mt-2"/>
+                    <Media object src={image} height="200px" className="mt-2"/>
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleText">Nội dung</Label>

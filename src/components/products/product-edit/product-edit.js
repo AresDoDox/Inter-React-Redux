@@ -27,7 +27,7 @@ class ProductEdit extends Component {
         if(product[0]){
             this.setState({
                 name: product[0].name,
-                image: product[0].image,
+                image: `http://${product[0].image}`,
                 description: product[0].description,
             });
         }
