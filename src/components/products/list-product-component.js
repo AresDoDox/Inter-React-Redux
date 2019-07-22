@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Pagination from "react-js-pagination";
 import { 
     Row, Col, Button
 } from 'reactstrap';
@@ -8,17 +9,24 @@ import Product from './product/product-component';
 import AlertComponent from './../pure-components/alert-component';
 
 import { connect } from 'react-redux';
+import "./list-product.css";
 
 class ListProduct extends Component {
     constructor(props){
         super(props);
         this.state = {
             isAlertShow: false,
+            activePage: 1,
+            elements: this.props.products ? this.props.products.slice(0,8) : [],
         }
     }
 
     componentWillMount() {
-        if (this.props.user.token) {
+        if (this.props.logined && 
+            this.props.logined !== "" && 
+            this.props.logined !== "LOGOUT" &&
+            this.props.logined !== "LOGIN_PROGRESS" &&
+            this.props.logined !== "LOGIN_FAILED") {
             this.setState({
                 isLogin: true
             });
@@ -31,19 +39,34 @@ class ListProduct extends Component {
                 isAlertShow: true,
             });
         }
+        let elements = nextProps.products;
+        this.setState({
+            elements: elements.slice(0,8)
+        });
+    }
+
+
+    handlePageChange = (pageNumber) => {
+        let elements = this.props.products;
+        const itemsCountPerPage = 8;
+        let start = (pageNumber - 1) * itemsCountPerPage;
+        let end = pageNumber * itemsCountPerPage;
+        this.setState({
+            activePage: pageNumber,
+            elements : elements.slice(start,end)
+        });
     }
 
     render(){
         let { products } = this.props;
-        let { isAlertShow, isLogin } = this.state;
-        let elements = products.map( (product,index) => {
-            return (
-                <Col xs="12" sm="4" md="3" key={index}>
-                    <Product product={product}/>
-                </Col>
-            )   
+        let { isAlertShow, isLogin, elements } = this.state; 
+        elements = elements.map( (product,index) => {
+                return (
+                    <Col xs="12" sm="4" md="3" key={index}>
+                        <Product product={product}/>
+                    </Col>
+                )   
         });
-        
         return (
             <div>  
                 <Row className="mb-3">
@@ -72,8 +95,19 @@ class ListProduct extends Component {
                     }
                     {elements}
                 </Row>
+                <Row>
+                    <Col xs="12" sm="12" md="12">
+                        <Pagination
+                            hideFirstLastPages
+                            pageRangeDisplayed={5}
+                            activePage={this.state.activePage}
+                            itemsCountPerPage={8}
+                            totalItemsCount={products.length}
+                            onChange={this.handlePageChange}
+                        />
+                    </Col>
+                </Row>
             </div>
-            
         )
     }
 }
@@ -82,7 +116,7 @@ let mapStateToProps = (store) => {
     return {
         products: store.fetchApiProduct,
         statusProduct: store.products,
-        user: store.login,
+        logined: store.login,
     };
   };
   

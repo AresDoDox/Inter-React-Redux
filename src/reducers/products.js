@@ -23,8 +23,6 @@ let myReducer = (state = initialState, action) => {
             return {
                 status: "PRODUCT_FAILED"
             };
-        case types.PRODUCT_SEARCH:
-            return action.keyword
         default:
             return "DEFAULT";
     };

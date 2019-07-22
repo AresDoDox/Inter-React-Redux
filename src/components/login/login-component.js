@@ -18,7 +18,7 @@ class LoginComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.user.token === ""){
+        if (nextProps.logined === ""){
             this.setState({
                 isAlertShown: false
             });
@@ -27,7 +27,11 @@ class LoginComponent extends Component {
                 isAlertShown: true
             });
         }
-        if (nextProps.user.token && nextProps.user.token !== "") {
+        if (nextProps.logined && 
+            nextProps.logined !== "" && 
+            nextProps.logined !== "LOGOUT" &&
+            nextProps.logined !== "LOGIN_PROGRESS" &&
+            nextProps.logined !== "LOGIN_FAILED") {
             this.props.history.push("/");
         } 
     }
@@ -46,7 +50,6 @@ class LoginComponent extends Component {
                     {isAlertShown &&
                         <AlertComponent color={'danger'} content={"Email hoặc mật khẩu không đúng!!!~"}/>
                     }
-                    {/* // color[ primary, success, danger, warning] */}
                     <FormGroup>
                         <Label for="exampleemail">Email</Label>
                         <Input type="text" name="email" 
@@ -85,7 +88,8 @@ class LoginComponent extends Component {
 
 let mapStateToProps = (store) => {
     return {
-        user: store.login,
+        users: store.fetchApiUser,
+        logined: store.login,
     };
   };
   

@@ -20,19 +20,28 @@ class RegisterComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.users !== 'DEFAULT'){
+        //check logined
+        if (nextProps.logined && 
+            nextProps.logined !== "" && 
+            nextProps.logined !== "LOGOUT" &&
+            nextProps.logined !== "LOGIN_PROGRESS" &&
+            nextProps.logined !== "LOGIN_FAILED") {
+            this.props.history.push("/");
+        } 
+        // Check Register
+        if (nextProps.registerStatus !== 'DEFAULT'){
             this.setState({
                 isAlertShown: true,
                 errors: "Vui lòng điền đầy đủ và chính xác thông tin!!!~"
             });
         } 
-        if (nextProps.users === 'REGISTER_LIKE'){
+        if (nextProps.registerStatus === 'REGISTER_LIKE'){
             this.setState({
                 isAlertShown: true,
                 errors: "Email đã tồn tại!!!~"
             });
         }
-        if (nextProps.users === 'REGISTER_SUCCESS'){
+        if (nextProps.registerStatus === 'REGISTER_SUCCESS'){
             this.props.history.push("/login");
         }
     }
@@ -105,7 +114,9 @@ class RegisterComponent extends Component {
 
 let mapStateToProps = (store) => {
     return {
-        users: store.register,
+        registerStatus: store.register,
+        users: store.fetchApiUser,
+        logined: store.login,
     };
 };
 

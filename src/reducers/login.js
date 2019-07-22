@@ -1,27 +1,14 @@
 import * as types from './../constants/ActionTypes';
 
 
-let initialState = {
-    userId: "",
-    email:'',
-    token: '',
-};
+let initialState = "";
 
 let myReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.LOGIN_SUCCESS:
-            state = {
-                userId: action.data.userId,
-                email: action.data.email,
-                token: action.data.token,
-            }
-            return {...state};
+            return action.email;
         case types.LOGOUT:
-            return {
-                userId: "",
-                email:'',
-                token: '',
-            }
+            return "LOGOUT"
         case types.LOGIN_PROGRESS:
             return "LOGIN_PROGRESS";
         case types.LOGIN_FAILED:

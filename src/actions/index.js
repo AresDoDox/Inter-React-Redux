@@ -1,23 +1,22 @@
 import axios from 'axios';
 import * as types from './../constants/ActionTypes';
-import randomstring from 'randomstring';
 // import md5 from 'md5';
 
 // Get API
-// export const fetchApiUserRequest = () => {
-//     return (dispatch) => {
-//         return axios('http://localhost:1494/api/accounts')
-//             .then(res => res.data)
-//             .then(data => dispatch(fetchApiUser(data)))
-//     }
-// }
+export const fetchApiUserRequest = () => {
+    return (dispatch) => {
+        return axios('http://localhost:1494/api/accounts')
+            .then(res => res.data)
+            .then(data => dispatch(fetchApiUser(data)))
+    }
+}
 // Action Function
-// export const fetchApiUser = (users) => {
-//     return {
-//         type: types.FETCH_API_USER,
-//         users
-//     }
-// }
+export const fetchApiUser = (users) => {
+    return {
+        type: types.FETCH_API_USER,
+        users
+    }
+}
 
 export const fetchApiProductRequest = () => {
     return (dispatch) => {
@@ -40,7 +39,13 @@ export const onViewDetail = (product_id) => {
         product_id
     }
 }
-
+//action LOGIN SUCCESS
+export const loginSuccess = (email) => {
+    return {
+        type: types.LOGIN_SUCCESS,
+        email
+    }
+} 
 // action LOGIN
 export const loginUser = (email, password) => {
     return (dispatch) => {
@@ -59,13 +64,10 @@ export const loginUser = (email, password) => {
                     });
                     // reject();
                 } else {
-                    dispatch({
-                        type: types.LOGIN_SUCCESS,
-                        data: { userId: user[0]._id, email: email, token: randomstring.generate() }
-                    });
-                    // resolve();
+                    localStorage.setItem("token", JSON.stringify(user[0].token));
+                    dispatch(loginSuccess(user[0].email));
+                    // resolve();                               
                 }
-
             })
             .catch((err) => {
                 dispatch({
@@ -79,6 +81,7 @@ export const loginUser = (email, password) => {
 // action LOGOUT
 export const logoutUser = () => {
     return (dispatch) => {
+        localStorage.setItem("token", JSON.stringify(""));
         dispatch({
             type: types.LOGOUT
         });

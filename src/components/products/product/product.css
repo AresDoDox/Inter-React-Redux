@@ -1,6 +1,22 @@
-.description-product{
+.title-product{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-transform: uppercase;
+    min-height: 48px;
+    font-weight: 500;
+}
+.description-product,
+.description-product>p{
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+.description-product>p{
+    min-height: 72px;
+}
+.description-product>p:first-child ~ p{
+    display: none;
 }

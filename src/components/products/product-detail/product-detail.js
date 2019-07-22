@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Media, Alert, Button } from 'reactstrap';
 import { withRouter } from "react-router-dom";
+import ReactHtmlParser from 'react-html-parser';
 
 import { connect } from 'react-redux';
 import * as actions from './../../../actions';
@@ -14,7 +15,11 @@ class ProductDetail extends Component {
     }
 
     componentWillMount() {
-        if (this.props.user.token) {
+        if (this.props.logined && 
+            this.props.logined !== "" && 
+            this.props.logined !== "LOGOUT" &&
+            this.props.logined !== "LOGIN_PROGRESS" &&
+            this.props.logined !== "LOGIN_FAILED") {
             this.setState({
                 isLogin: true
             });
@@ -42,21 +47,21 @@ class ProductDetail extends Component {
                 {product &&
                     <Media>
                         <Media left href="#" className="mr-3">
-                            <Media object src={`http://${product.image}`} alt={product.name} />
+                            <Media className="mb-3" object src={`http://${product.image}`} alt={product.name} />
+                            {isLogin &&
+                                <div>
+                                    <Button className="mr-2" color="success" onClick={() => { this.onEditProduct() }}>Sửa</Button>
+                                    <Button color="danger" onClick={() => { this.onDeleteProduct(product_id) }}>Xóa</Button>
+                                </div> 
+                            }
                         </Media>
                         <Media body>
                             <Media heading>
                                 {product.name}
                             </Media>
-                            <Media className="mb-4">
-                                {product.description}
-                            </Media>
-                            {isLogin &&
-                                <div>
-                                    <Button className="mr-2" color="danger" onClick={() => { this.onDeleteProduct(product_id) }}>Xóa</Button>
-                                    <Button color="success" onClick={() => { this.onEditProduct() }}>Sửa</Button>
-                                </div> 
-                            }
+                            <div className="mb-4">
+                                { ReactHtmlParser(product.description) }
+                            </div>
                         </Media>
                     </Media>
                 }
@@ -71,7 +76,7 @@ let mapStateToProps = (store) => {
         product_id: store.viewDetailProduct,
         products: store.fetchApiProduct,
         statusProduct: store.products,
-        user: store.login
+        logined: store.login
     };
 };
 

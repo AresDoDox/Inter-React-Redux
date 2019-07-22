@@ -35,7 +35,7 @@ class App extends Component {
     this.state = {
       isOpen: false,
       isLogin: false,
-      user: {},
+      email: "",
       keyword: ''
     }
   }
@@ -46,22 +46,37 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
+
+  componentWillMount() {
     this.props.onFetchApiProduct();
+    this.props.onfetchApiUser();
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.user.token && nextProps.user.token !== "") {
+    // check Login token
+    if (localStorage.getItem("token")) {
+      let token = JSON.parse(localStorage.getItem("token"));
+      let userToken = nextProps.users.filter(user => user.token === token);
+      if (userToken[0]) {
+        this.props.onLogined(userToken[0].email);
+      }
+    }
+    if (nextProps.logined &&
+      nextProps.logined !== "" &&
+      nextProps.logined !== "LOGOUT" &&
+      nextProps.logined !== "LOGIN_PROGRESS" &&
+      nextProps.logined !== "LOGIN_FAILED") {
       this.setState({
-        user: nextProps.user,
+        email: nextProps.logined,
         isLogin: true
       });
     } else {
       this.setState({
-        user: {},
+        email: "",
         isLogin: false
       });
     }
+
   }
 
   onLogoutUser = () => {
@@ -75,7 +90,7 @@ class App extends Component {
   }
 
   render() {
-    let { isLogin, user, keyword } = this.state;
+    let { isLogin, email, keyword } = this.state;
     return (
       <div>
         <Navbar color="light" light expand="md">
@@ -85,19 +100,19 @@ class App extends Component {
             {!isLogin &&
               <Nav className="ml-auto" navbar>
                 <NavItem className="mr-3" >
-                  <Input 
-                    type="text" 
-                    name="keyword" 
-                    id="keyword" 
+                  <Input
+                    type="text"
+                    name="keyword"
+                    id="keyword"
                     placeholder="Nhập từ muốn tìm..."
                     value={keyword}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       this.setState({
                         keyword: event.target.value
                       })
                     }}
-                    onKeyDown={(event)=>{
-                      if(event.keyCode === 13){
+                    onKeyDown={(event) => {
+                      if (event.keyCode === 13) {
                         this.onSearch(keyword);
                       }
                     }
@@ -105,35 +120,35 @@ class App extends Component {
                   />
                 </NavItem>
                 <NavItem >
-                    <Link to="/" className="nav-link">Trang chủ</Link>
+                  <Link to="/" className="nav-link">Trang chủ</Link>
                 </NavItem>
                 <NavItem >
-                    <Link to="/products" className="nav-link">Bài viết</Link>
+                  <Link to="/products" className="nav-link">Bài viết</Link>
                 </NavItem>
                 <NavItem >
-                    <Link to="/register" className="nav-link">Đăng ký</Link>
+                  <Link to="/register" className="nav-link">Đăng ký</Link>
                 </NavItem>
                 <NavItem >
-                    <Link to="/login" className="nav-link">Đăng nhập</Link>
+                  <Link to="/login" className="nav-link">Đăng nhập</Link>
                 </NavItem>
               </Nav>
             }
             {isLogin &&
               <Nav className="ml-auto" navbar>
                 <NavItem className="mr-3" >
-                  <Input 
-                    type="text" 
-                    name="keyword" 
-                    id="keyword" 
+                  <Input
+                    type="text"
+                    name="keyword"
+                    id="keyword"
                     placeholder="Nhập từ muốn tìm..."
                     value={keyword}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       this.setState({
                         keyword: event.target.value
                       })
                     }}
-                    onKeyDown={(event)=>{
-                      if(event.keyCode === 13){
+                    onKeyDown={(event) => {
+                      if (event.keyCode === 13) {
                         this.onSearch(keyword);
                       }
                     }
@@ -141,14 +156,14 @@ class App extends Component {
                   />
                 </NavItem>
                 <NavItem >
-                    <Link to="/" className="nav-link">Trang chủ</Link>
+                  <Link to="/" className="nav-link">Trang chủ</Link>
                 </NavItem>
                 <NavItem >
-                    <Link to="/products" className="nav-link">Bài viết</Link>
+                  <Link to="/products" className="nav-link">Bài viết</Link>
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar >
                   <DropdownToggle nav caret>
-                    {user.email}
+                    {email}
                   </DropdownToggle>
                   <DropdownMenu right>
                     <DropdownItem onClick={() => this.onLogoutUser()}>
@@ -160,7 +175,7 @@ class App extends Component {
             }
           </Collapse>
         </Navbar>
-        <div className="container pt-3">
+        <div className="px-3 py-3">
           <Switch>
             {!isLogin &&
               <Route path="/" exact component={() => <h1>Chào mừng bạn đến Website của Thái Huy!!!</h1>} />
@@ -186,12 +201,16 @@ class App extends Component {
 
 let mapStateToProps = (store) => {
   return {
-    user: store.login
+    users: store.fetchApiUser,
+    logined: store.login,
   };
 };
 
 let mapDispatchToProps = (dispatch, action) => {
   return {
+    onfetchApiUser: () => {
+      dispatch(actions.fetchApiUserRequest());
+    },
     onFetchApiProduct: () => {
       dispatch(actions.fetchApiProductRequest());
     },
@@ -200,7 +219,10 @@ let mapDispatchToProps = (dispatch, action) => {
     },
     onSearch: (keyword) => {
       dispatch(actions.searchProduct(keyword));
-    }
+    },
+    onLogined: (email) => {
+      dispatch(actions.loginSuccess(email));
+    },
   };
 }
 

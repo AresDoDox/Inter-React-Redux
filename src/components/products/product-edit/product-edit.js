@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Media, CustomInput } from 'reactstrap';
+
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import AlertComponent from './../../pure-components/alert-component';
 
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 
 class ProductEdit extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             name: '',
@@ -18,13 +22,16 @@ class ProductEdit extends Component {
             errors: "",
         }
     }
-    componentWillMount(){
+    componentWillMount() {
         let { products, product_id } = this.props;
-        if (!this.props.user.token) {
+        if (this.props.logined === "" ||
+        this.props.logined === "LOGOUT" ||
+        this.props.logined === "LOGIN_PROGRESS" ||
+        this.props.logined === "LOGIN_FAILED") {
             this.props.history.push("/login");
         }
-        let product = products.filter( product => product._id === product_id );
-        if(product[0]){
+        let product = products.filter(product => product._id === product_id);
+        if (product[0]) {
             this.setState({
                 name: product[0].name,
                 image: `http://${product[0].image}`,
@@ -34,13 +41,13 @@ class ProductEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.product.status === 'PRODUCT_FAILED'){
+        if (nextProps.product.status === 'PRODUCT_FAILED') {
             this.setState({
                 isAlertShown: true,
                 errors: "Vui lòng điền đầy đủ thông tin!!!~"
             });
         }
-        if (nextProps.product.status === 'PRODUCT_UPDATE'){
+        if (nextProps.product.status === 'PRODUCT_UPDATE') {
             this.setState({
                 isAlertShown: true,
                 errors: "Sửa bài viết thành công!!!~",
@@ -53,22 +60,22 @@ class ProductEdit extends Component {
         this.props.onEditProduct(product_id, name, image, description);
     }
 
-    onViewDetail = (id) =>{
+    onViewDetail = (id) => {
         this.props.onViewDetail(id);
         this.props.history.push("/product-detail");
     }
 
     render() {
-        let {product_id} = this.props;
+        let { product_id } = this.props;
         let { isAlertShown, colorAlert, errors, name, image, description } = this.state;
         return (
             <Form>
                 <h3>CHỈNH SỬA BÀI VIẾT</h3>
-                {product_id === "" && 
-                    <AlertComponent color={"danger"} content={"Bài viết này không tồn tại!!!~"} />  
+                {product_id === "" &&
+                    <AlertComponent color={"danger"} content={"Bài viết này không tồn tại!!!~"} />
                 }
                 {isAlertShown &&
-                    <AlertComponent color={colorAlert} content={errors} />  
+                    <AlertComponent color={colorAlert} content={errors} />
                 }
                 {(isAlertShown && colorAlert === "success") &&
                     <Button color="primary" onClick={() => this.onViewDetail(product_id)} className="mb-2">Xem tin ngay!</Button>
@@ -90,10 +97,10 @@ class ProductEdit extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleCustomFileBrowser">File Image</Label>
-                    <CustomInput 
-                        type="file" 
-                        id="exampleCustomFileBrowser" 
-                        name="customFile" 
+                    <CustomInput
+                        type="file"
+                        id="exampleCustomFileBrowser"
+                        name="customFile"
                         // value={this.state.image}
                         onChange={(event) => {
                             let files = event.target.files;
@@ -106,25 +113,23 @@ class ProductEdit extends Component {
                             }
                         }}
                     />
-                    <Media object src={image} alt={name} height="200px" className="mt-2"/>
+                    <Media object src={image} alt={name} height="200px" className="mt-2" />
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleText">Nội dung</Label>
-                    <Input
-                        type="textarea"
-                        name="description"
-                        id="exampleText"
-                        rows="8"
-                        value={this.state.description}
-                        onChange={(event) => {
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={this.state.description}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
                             this.setState({
-                                description: event.target.value
+                                description: data
                             })
                         }}
                     />
                 </FormGroup>
-                <Button 
-                    onClick={()=>{this.onEditProduct(product_id, name, image, description)}}
+                <Button
+                    onClick={() => { this.onEditProduct(product_id, name, image, description) }}
                     disabled={product_id === "" ? true : false}
                 >
                     Sửa bài viết
@@ -140,11 +145,11 @@ let mapStateToProps = (store) => {
         products: store.fetchApiProduct,
         product: store.products,
         product_id: store.viewDetailProduct,
-        user: store.login,
+        logined: store.login,
     };
-  };
-  
-  let mapDispatchToProps = (dispatch, action) => {
+};
+
+let mapDispatchToProps = (dispatch, action) => {
     return {
         onEditProduct: (product_id, name, image, description) => {
             dispatch(actions.editProduct(product_id, name, image, description))
@@ -153,7 +158,7 @@ let mapStateToProps = (store) => {
             dispatch(actions.onViewDetail(product_id));
         }
     };
-  }
-  
-  
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(ProductEdit));
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProductEdit));

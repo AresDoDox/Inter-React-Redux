@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button, Media, CustomInput } from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
+
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import * as actions from './../../../actions';
 
 import AlertComponent from './../../pure-components/alert-component';
@@ -20,7 +24,11 @@ class ProductCreate extends Component {
     }
 
     componentWillMount() {
-        if (!this.props.user.token) {
+        if (this.props.logined === "" ||
+            this.props.logined === "LOGOUT" ||
+            this.props.logined === "LOGIN_PROGRESS" ||
+            this.props.logined === "LOGIN_FAILED"
+        ){
             this.props.history.push("/login");
         }
     }
@@ -101,17 +109,15 @@ class ProductCreate extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleText">Nội dung</Label>
-                    <Input
-                        type="textarea"
-                        name="description"
-                        id="exampleText"
-                        rows="8"
-                        value={this.state.description}
-                        onChange={(event) => {
+                    <CKEditor
+                        editor={ ClassicEditor }
+                        data={this.state.description}
+                        onChange={ ( event, editor ) => {
+                            const data = editor.getData();
                             this.setState({
-                                description: event.target.value
+                                description: data
                             })
-                        }}
+                        } }
                     />
                 </FormGroup>
                 <Button color="primary" className="mb-2" onClick={() => this.onCreatePost(name, image, description)}>Đăng bài viết</Button>
@@ -124,7 +130,7 @@ class ProductCreate extends Component {
 let mapStateToProps = (store) => {
     return {
         Product: store.products,
-        user: store.login,
+        logined: store.login,
     };
 };
 

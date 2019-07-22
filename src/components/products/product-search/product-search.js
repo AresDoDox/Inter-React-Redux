@@ -13,7 +13,7 @@ class ProductSearch extends Component {
         let { products,keyword } = this.props;
         let productsLength = 0;
         // Search Products
-        if (keyword !== "DEFAULT") {
+        if (keyword !== "") {
             products = products.filter(product => {
                 return product.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1 
                 || product.description.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
@@ -52,7 +52,7 @@ let mapStateToProps = (store) => {
     return {
         products: store.fetchApiProduct,
         user: store.login,
-        keyword: store.products
+        keyword: store.search
     };
   };
   
