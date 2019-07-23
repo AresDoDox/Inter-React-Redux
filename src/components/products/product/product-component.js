@@ -20,7 +20,7 @@ class Product extends Component {
     render() {
         let { product } = this.props;
         return (
-            <Card className="mb-3">
+            <Card className="mb-3 box-product">
                 <CardImg top width="100%" src={`http://${product.image}`} alt={product.name} />
                 <CardBody>
                     <CardTitle className="title-product">{product.name}</CardTitle>

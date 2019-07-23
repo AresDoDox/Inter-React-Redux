@@ -22,9 +22,14 @@
     background: rgba(0, 0, 0, 0.5);
 }
 .slideShow .carousel-caption{
+    display: block !important;
+    width: 100%;
     left: 50%;
     bottom: 43%;
     transform: translate(-50%,-50%);
+}
+.slideShow .carousel-caption h3{
+    font-size: 1.4rem;
 }
 .slideShow .view-more{
     position: absolute;

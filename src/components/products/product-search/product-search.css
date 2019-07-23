@@ -1,0 +1,15 @@
+.search-product h3,
+.message-search>p{
+    color: #fff !important;
+    margin: 0;
+}
+.search-product hr{
+    border-color: #fff;
+}
+/* -----------------RESPONSIVE-------------- */
+@media (max-width: 767.98px) {
+    .search-product{
+        display: flex;
+        flex-direction: column;
+    }
+}

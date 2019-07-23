@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import { Button, Form, FormGroup, Label, Input, Media, CustomInput } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Media, CustomInput, Row, Col } from 'reactstrap';
 
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -9,6 +9,8 @@ import AlertComponent from './../../pure-components/alert-component';
 
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
+
+import './product-edit.css';
 
 class ProductEdit extends Component {
     constructor(props) {
@@ -69,7 +71,9 @@ class ProductEdit extends Component {
         let { product_id } = this.props;
         let { isAlertShown, colorAlert, errors, name, image, description } = this.state;
         return (
-            <Form>
+            <Row className="d-flex justify-content-center">
+                <Col xs="12" sm="12" md="12" xl="12">
+            <Form className="form-edit-product">
                 <h3>CHỈNH SỬA BÀI VIẾT</h3>
                 {product_id === "" &&
                     <AlertComponent color={"danger"} content={"Bài viết này không tồn tại!!!~"} />
@@ -135,6 +139,8 @@ class ProductEdit extends Component {
                     Sửa bài viết
                 </Button>
             </Form>
+            </Col>
+            </Row>
         )
     }
 }

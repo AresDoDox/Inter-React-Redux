@@ -1,3 +1,6 @@
+.box-product{
+    background-color: rgba(255, 255, 255, 0.75) !important;
+}
 .title-product{
     display: -webkit-box;
     -webkit-line-clamp: 2;

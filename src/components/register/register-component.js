@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { Link, withRouter } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import * as actions from './../../actions';
 
 import AlertComponent from './../pure-components/alert-component';
+import './register-component.css';
 
 class RegisterComponent extends Component {
     constructor(props) {
@@ -53,7 +54,9 @@ class RegisterComponent extends Component {
     render() {
         let { email, password, re_password, isAlertShown, errors } = this.state;
         return (
-            <Form>
+            <Row className="d-flex justify-content-center">
+                <Col xs="12" sm="8" md="6" xl="4">
+                    <Form className="register-form">
                 <h3>ĐĂNG KÝ TÀI KHOẢN</h3>
                 {isAlertShown &&
                         <AlertComponent color={'danger'} content={errors}/>
@@ -107,6 +110,8 @@ class RegisterComponent extends Component {
                 <br />
                 <Link to="/login">Đăng nhập!!!</Link>
             </Form>
+                </Col>
+            </Row>
         )
     }
 }

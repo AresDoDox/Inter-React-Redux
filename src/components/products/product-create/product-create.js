@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, Button, Media, CustomInput } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Button, Media, CustomInput, Row, Col } from 'reactstrap';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -9,6 +9,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import * as actions from './../../../actions';
 
 import AlertComponent from './../../pure-components/alert-component';
+import './product-create.css';
 
 class ProductCreate extends Component {
     constructor(props) {
@@ -64,7 +65,9 @@ class ProductCreate extends Component {
     render() {
         let { colorAlert, isAlertShown, errors, name, image, description } = this.state;
         return (
-            <Form>
+            <Row className="d-flex justify-content-center">
+                <Col xs="12" sm="12" md="12" xl="12">
+            <Form className="form-create-product">
                 <h3>ĐĂNG BÀI VIẾT</h3>
                 {isAlertShown &&
                     <AlertComponent color={colorAlert} content={errors} />  
@@ -122,6 +125,8 @@ class ProductCreate extends Component {
                 </FormGroup>
                 <Button color="primary" className="mb-2" onClick={() => this.onCreatePost(name, image, description)}>Đăng bài viết</Button>
             </Form>
+            </Col>
+            </Row>
         )
     }
 }

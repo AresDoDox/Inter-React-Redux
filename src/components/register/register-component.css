@@ -1,0 +1,12 @@
+.register-form{
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.75);
+    margin-top: 50px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.46);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.46);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.46);
+}
+.register-form input {
+    border: 1px solid rgba(0,0,0,0.45);
+}
