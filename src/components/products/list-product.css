@@ -41,6 +41,7 @@ ul.pagination li.active a:hover{
 /* container */
 .add-product{
     float: right;
+    background-color: rgba(0,123,255, 0.8) !important;
 }
 .header-container h3{
     color: #fff;
@@ -53,10 +54,5 @@ ul.pagination li.active a:hover{
 @media (max-width: 767.98px) {
     .header-container{
         display: flex;
-        flex-direction: column;
-    }
-    .add-product{
-        float: left;
-        margin-bottom: 10px;
     }
 }

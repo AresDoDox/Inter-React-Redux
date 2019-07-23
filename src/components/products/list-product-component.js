@@ -77,11 +77,11 @@ class ListProduct extends Component {
         return (
             <div>
                 <Row className="mb-3 header-container">
-                    <Col xs="12" sm="9" md="9" className="d-flex justify-content-start align-items-end" style={{"margin-bottom":"3px"}}>
+                    <Col xs="7" sm="9" md="9" className="d-flex justify-content-start align-items-end" style={{"margin-bottom":"3px"}}>
                         <h3>TẤT CẢ BÀI VIẾT</h3>
                     </Col>
                     {isLogin &&
-                        <Col xs="12" sm="3" md="3" className="pb-2">
+                        <Col xs="5" sm="3" md="3" className="pb-2">
                             <Button color="primary" className="add-product">
                                 <Link to="/product-create" style={{ color: "#fff" }}>Thêm bài viết</Link>
                             </Button>
