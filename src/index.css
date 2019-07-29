@@ -25,7 +25,7 @@ code {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: black; 
+  background: #444; 
   border-radius: 1px;
 }
 

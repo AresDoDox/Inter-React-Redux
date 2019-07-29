@@ -69,7 +69,7 @@ class ListProduct extends Component {
         let { isAlertShow, isLogin, elements } = this.state;
         elements = elements.map((product, index) => {
             return (
-                <Col xs="12" sm="4" md="3" key={index}>
+                <Col xs="12" sm="4" md="4" xl="3" key={index}>
                     <Product product={product} />
                 </Col>
             )
@@ -77,7 +77,7 @@ class ListProduct extends Component {
         return (
             <div>
                 <Row className="mb-3 header-container">
-                    <Col xs="7" sm="9" md="9" className="d-flex justify-content-start align-items-end" style={{"margin-bottom":"3px"}}>
+                    <Col xs="7" sm="9" md="9" className="d-flex justify-content-start align-items-end">
                         <h3>TẤT CẢ BÀI VIẾT</h3>
                     </Col>
                     {isLogin &&

@@ -46,6 +46,7 @@ ul.pagination li.active a:hover{
 .header-container h3{
     color: #fff;
     margin: 0;
+    margin-bottom: 3px;
 }
 .header-container hr{
     border-color: #fff;
@@ -54,5 +55,17 @@ ul.pagination li.active a:hover{
 @media (max-width: 767.98px) {
     .header-container{
         display: flex;
+    }
+}
+@media (max-width: 406px){
+    .header-container>div{
+        min-width: 100% !important;
+    }
+    .header-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .header-container>button{
+        float: left;
     }
 }

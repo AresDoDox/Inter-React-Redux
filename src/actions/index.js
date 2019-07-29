@@ -127,7 +127,7 @@ export const registerUser = (email, password, re_password) => {
 }
 
 //action PRODUCT
-export const product = (name, image, description) => {
+export const product = (name, poster, image, description) => {
     return (dispatch) => {
         if (name === "" || image === "" || description === "") {
             dispatch({
@@ -136,6 +136,7 @@ export const product = (name, image, description) => {
         } else {
             axios.post('http://localhost:1494/api/products', {
                 name,
+                poster,
                 image,
                 description
             }).then(

@@ -51,7 +51,7 @@ class ProductDetail extends Component {
                     <Col xs="12" sm="12" md="12" xl="12">
                         <div className="product-detail">
                             <div className="float-left product-detail-image">
-                                <img className="rounded" object src={`http://${product.image}`} alt={product.name} />
+                                <img className="rounded" src={`http://${product.image}`} alt={product.name} />
                                 {isLogin &&
                                     <div className="product-detail-button">
                                         <Button className="mr-2" color="primary" onClick={() => { this.onEditProduct() }}>Sửa</Button>
@@ -60,10 +60,9 @@ class ProductDetail extends Component {
                                 }
                             </div>
                             <div>
-                                <h3>
-                                    {product.name}
-                                </h3>
-                                <div className="mb-4">
+                                <h3>{product.name}</h3>
+                                <p className="product-poster">Người đăng: <span>{product.poster}</span></p>
+                                <div className="mb-4 product-content">
                                     {ReactHtmlParser(product.description)}
                                 </div>
                             </div>

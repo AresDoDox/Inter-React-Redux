@@ -54,7 +54,8 @@ class ProductCreate extends Component {
     }
 
     onCreatePost = (name, image, description) =>{
-        this.props.onCreateProduct(name, image, description);
+        let poster = this.props.logined;
+        this.props.onCreateProduct(name, poster, image, description);
     }
 
     onViewDetail = (id) =>{
@@ -141,8 +142,8 @@ let mapStateToProps = (store) => {
 
 let mapDispatchToProps = (dispatch, action) => {
     return {
-        onCreateProduct: (name, image, description)=>{
-            dispatch(actions.product(name, image, description))
+        onCreateProduct: (name, poster, image, description)=>{
+            dispatch(actions.product(name, poster, image, description))
         },
         onViewDetail: (product_id) => {
             dispatch(actions.onViewDetail(product_id));
