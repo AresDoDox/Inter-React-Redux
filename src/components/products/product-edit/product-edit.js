@@ -55,6 +55,7 @@ class ProductEdit extends Component {
                 errors: "Sửa bài viết thành công!!!~",
                 colorAlert: "success",
             });
+            window.scrollTo(0, 0);
         }
     };
 

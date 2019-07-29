@@ -94,12 +94,12 @@ export const registerUser = (email, password, re_password) => {
             type: types.REGISTER_PROGRESS,
         });
         if (!email || !password || !re_password) {
-            dispatch({
+            return dispatch({
                 type: types.REGISTER_FAILED,
             });
         }
         if (password !== re_password) {
-            dispatch({
+            return dispatch({
                 type: types.REGISTER_FAILED,
             });
         }
@@ -108,21 +108,23 @@ export const registerUser = (email, password, re_password) => {
             .then(data => {
                 let user = data.filter(user => user.email === email);
                 if (user[0]) {
-                    dispatch({
+                    return dispatch({
                         type: types.REGISTER_LIKE,
+                    });
+                }else{
+                    return dispatch({
+                        type: types.REGISTER_SUCCESS,
+                        user: {
+                            password,
+                            email
+                        }
                     });
                 }
             }).catch();
-        // Create Account   
-        if (password && email) {
-            dispatch({
-                type: types.REGISTER_SUCCESS,
-                user: {
-                    password,
-                    email
-                }
-            });
-        }
+        // // Create Account   
+        // if (password && email) {
+            
+        // }
     }
 }
 

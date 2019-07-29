@@ -50,6 +50,7 @@ class ProductCreate extends Component {
                 image: '',
                 description: '',
             });
+            window.scrollTo(0, 0);
         } 
     }
 

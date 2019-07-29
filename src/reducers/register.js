@@ -7,6 +7,7 @@ let initialState = {
 let myReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.REGISTER_SUCCESS:
+            console.log('SUCCESS')
             let { email, password } = action.user
                 axios.post('http://localhost:1494/api/accounts', {
                         email: email,
